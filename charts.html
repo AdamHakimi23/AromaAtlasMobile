@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cafe Ratings Chart</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      height: 100vh;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .header {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>🔧 Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="charts.html">Charts</a>
+    <a href="ratings.html">Ratings</a>
+    <a href="cafes.html">Manage Cafes</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main-content">
+    <div class="header">⭐ Average Ratings per Cafe</div>
+    <div class="card">
+      <canvas id="activityChart" height="100"></canvas>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    // Optional: Import your auth-check logic if required
+    import "/script/auth-check.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6NAG1a8Bv8SiNBPBcZBWdpldK7Rgo0gg",
+      authDomain: "aromaatlas-ff5cd.firebaseapp.com",
+      projectId: "aromaatlas-ff5cd",
+      storageBucket: "aromaatlas-ff5cd.appspot.com",
+      messagingSenderId: "1084697066953",
+      appId: "1:1084697066953:web:9ae27d03d54025fbba7c18",
+      measurementId: "G-96QJG9WKWY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadChartData() {
+      const ratingsSnap = await getDocs(collection(db, "cafe_ratings"));
+
+      const ratingsByCafe = {};
+
+      ratingsSnap.forEach(doc => {
+        const data = doc.data();
+        const cafeId = data.cafeId || "Unknown";
+        const rating = parseFloat(data.rating);
+        if (!ratingsByCafe[cafeId]) {
+          ratingsByCafe[cafeId] = [];
+        }
+        if (!isNaN(rating)) {
+          ratingsByCafe[cafeId].push(rating);
+        }
+      });
+
+      const averages = Object.entries(ratingsByCafe).map(([cafeId, ratings]) => {
+        const avg = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
+        return { cafeId, avg: parseFloat(avg.toFixed(2)) };
+      });
+
+      averages.sort((a, b) => b.avg - a.avg);
+
+      const top5 = averages.slice(0, 5);
+
+      const cafeIds = top5.map(r => r.cafeId);
+      const avgRatings = top5.map(r => r.avg);
+
+      new Chart(document.getElementById("activityChart"), {
+        type: "bar",
+        data: {
+          labels: cafeIds,
+          datasets: [{
+            label: "Average Rating",
+            data: avgRatings,
+            backgroundColor: "#f39c12"
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              min: 0,
+              max: 5,
+              title: {
+                display: true,
+                text: "Avg Rating (1–5)"
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Cafe ID"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    loadChartData();
+  </script>
+</body>
+</html>

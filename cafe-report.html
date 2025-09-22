@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cafe Report</title>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      height: 100vh;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      margin: 15px 0;
+      color: #ecf0f1;
+      text-decoration: none;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+
+    h2, h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="charts.html">Charts</a>
+    <a href="ratings.html">Ratings</a>
+    <a href="cafes.html">Manage Cafes</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main-content">
+    <h2 id="cafeName">Cafe Report</h2>
+    <div class="card" id="cafeDetails">Loading cafe...</div>
+    <div class="card" id="cafeStats">Loading stats...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      getDocs,
+      query,
+      where
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6NAG1a8Bv8SiNBPBcZBWdpldK7Rgo0gg",
+      authDomain: "aromaatlas-ff5cd.firebaseapp.com",
+      projectId: "aromaatlas-ff5cd"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Get cafeId from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const cafeId = urlParams.get("cafeId");
+
+    if (!cafeId) {
+      alert("Missing cafeId in URL");
+      location.href = "cafes.html";
+    }
+
+    document.getElementById("logoutBtn").onclick = () => {
+      signOut(auth);
+      window.location.href = "login.html";
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return location.href = "login.html";
+      await loadCafeData(cafeId);
+    });
+
+    async function loadCafeData(cafeId) {
+      const cafesSnap = await getDocs(collection(db, "cafes"));
+      let selectedCafe = null;
+      cafesSnap.forEach(doc => {
+        if (doc.data().cafeId === cafeId) selectedCafe = { id: doc.id, ...doc.data() };
+      });
+
+      if (!selectedCafe) {
+        document.getElementById("cafeDetails").innerHTML = "Cafe not found.";
+        return;
+      }
+
+      document.getElementById("cafeName").textContent = `📊 Report: ${selectedCafe.name}`;
+      document.getElementById("cafeDetails").innerHTML = `
+        <p><strong>ID:</strong> ${selectedCafe.cafeId}</p>
+        <p><strong>Owner:</strong> ${selectedCafe.OwnerName || 'N/A'}</p>
+        <p><strong>Status:</strong> ${selectedCafe.status || 'N/A'}</p>
+        <p><strong>Description:</strong> ${selectedCafe.description || '-'}</p>
+        <p><strong>Hours:</strong> ${selectedCafe.workingHours} | ${selectedCafe.workingDay}</p>
+      `;
+
+      // Bookings
+      const bookingsQ = query(collection(db, "Bookings"), where("cafeId", "==", cafeId));
+      const bookingsSnap = await getDocs(bookingsQ);
+      const bookingCount = bookingsSnap.size;
+
+      // Orders
+      const ordersQ = query(collection(db, "orders"), where("cafeId", "==", cafeId));
+      const ordersSnap = await getDocs(ordersQ);
+      const orderCount = ordersSnap.size;
+
+      // Ratings
+      const ratingsQ = query(collection(db, "cafe_ratings"), where("cafeId", "==", cafeId));
+      const ratingsSnap = await getDocs(ratingsQ);
+      let avgRating = 0;
+      const ratings = [];
+      ratingsSnap.forEach(doc => {
+        const r = parseFloat(doc.data().rating);
+        if (!isNaN(r)) ratings.push(r);
+      });
+      if (ratings.length > 0) {
+        avgRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+        avgRating = avgRating.toFixed(2);
+      }
+
+      document.getElementById("cafeStats").innerHTML = `
+        <h3>📈 Stats</h3>
+        <p><strong>Total Bookings:</strong> ${bookingCount}</p>
+        <p><strong>Total Orders:</strong> ${orderCount}</p>
+        <p><strong>Average Rating:</strong> ${avgRating || 'N/A'}</p>
+      `;
+    }
+  </script>
+</body>
+</html>

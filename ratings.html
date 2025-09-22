@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ratings Overview</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      height: 100vh;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .header {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .rating {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .rating p {
+      margin: 5px 0;
+    }
+
+    .rating strong {
+      display: inline-block;
+      width: 100px;
+    }
+
+    .rating .stars {
+      color: #f39c12;
+    }
+
+    .filter-box {
+      margin-bottom: 20px;
+    }
+
+    .filter-box input {
+      padding: 8px;
+      font-size: 14px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>🔧 Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="charts.html">Charts</a>
+    <a href="ratings.html">Ratings</a>
+    <a href="cafes.html">Manage Cafes</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main-content">
+    <div class="header">⭐ Cafe Ratings</div>
+    <div class="filter-box">
+      <input type="text" id="filterInput" placeholder="Filter by Cafe ID..." />
+    </div>
+    <div class="card" id="ratingsList">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import "/script/auth-check.js"; // ✅ adjust if not in site root
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6NAG1a8Bv8SiNBPBcZBWdpldK7Rgo0gg",
+      authDomain: "aromaatlas-ff5cd.firebaseapp.com",
+      projectId: "aromaatlas-ff5cd",
+      storageBucket: "aromaatlas-ff5cd.appspot.com", // ✅ corrected URL
+      messagingSenderId: "1084697066953",
+      appId: "1:1084697066953:web:9ae27d03d54025fbba7c18",
+      measurementId: "G-96QJG9WKWY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadRatings() {
+      const snap = await getDocs(collection(db, "cafe_ratings"));
+      const list = document.getElementById("ratingsList");
+      list.innerHTML = "";
+
+      const ratings = [];
+
+      snap.forEach(doc => {
+        const data = doc.data();
+        ratings.push({ ...data, id: doc.id });
+      });
+
+      displayRatings(ratings);
+
+      document.getElementById("filterInput").addEventListener("input", e => {
+        const keyword = e.target.value.toLowerCase();
+        const filtered = ratings.filter(r => r.cafeId?.toLowerCase().includes(keyword));
+        displayRatings(filtered);
+      });
+    }
+
+    function displayRatings(ratings) {
+      const list = document.getElementById("ratingsList");
+      list.innerHTML = "";
+
+      if (ratings.length === 0) {
+        list.innerHTML = "<p>No ratings found.</p>";
+        return;
+      }
+
+      ratings.sort((a, b) => {
+        const timeA = a.timestamp?.toMillis?.() || 0;
+        const timeB = b.timestamp?.toMillis?.() || 0;
+        return timeB - timeA;
+      });
+
+      ratings.forEach(r => {
+        const date = r.timestamp?.toDate?.().toLocaleString() || "Unknown Date";
+        const stars = "★".repeat(Math.round(r.rating || 0));
+        const review = r.review || "(No review)";
+        const userEmail = r.userEmail || "Anonymous";
+        const cafeId = r.cafeId || "Unknown";
+
+        const div = document.createElement("div");
+        div.className = "rating";
+        div.innerHTML = `
+          <p><strong>Cafe:</strong> ${cafeId}</p>
+          <p><strong>User:</strong> ${userEmail}</p>
+          <p><strong>Rating:</strong> <span class="stars">${stars}</span></p>
+          <p><strong>Review:</strong> ${review}</p>
+          <p><strong>Date:</strong> ${date}</p>
+        `;
+
+        list.appendChild(div);
+      });
+    }
+
+    loadRatings();
+  </script>
+</body>
+</html>

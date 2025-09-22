@@ -1,0 +1,163 @@
+<!-- File: analytics.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Analytics</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      height: 100vh;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .header {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .stat-box {
+      flex: 1 1 250px;
+      background-color: #3498db;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-box h2 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .stat-box p {
+      margin: 5px 0 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>🔧 Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="charts.html">Charts</a>
+    <a href="ratings.html">Ratings</a>
+    <a href="cafes.html">Manage Cafes</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main-content">
+    <div class="header">📊 Analytics Overview</div>
+    <div class="stats">
+      <div class="stat-box" style="background-color: #16a085;">
+        <h2 id="cafeCount">0</h2>
+        <p>Total Cafes</p>
+      </div>
+      <div class="stat-box" style="background-color: #8e44ad;">
+        <h2 id="drinkCount">0</h2>
+        <p>Total Drinks</p>
+      </div>
+      <div class="stat-box" style="background-color: #27ae60;">
+        <h2 id="tableCount">0</h2>
+        <p>Total Tables</p>
+      </div>
+      <div class="stat-box" style="background-color: #d35400;">
+        <h2 id="bookingCount">0</h2>
+        <p>Total Bookings</p>
+      </div>
+      <div class="stat-box" style="background-color: #c0392b;">
+        <h2 id="ratingCount">0</h2>
+        <p>Total Ratings</p>
+      </div>
+      <div class="stat-box" style="background-color: #34495e;">
+        <h2 id="orderCount">0</h2>
+        <p>Total Orders</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import "/script/auth-check.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6NAG1a8Bv8SiNBPBcZBWdpldK7Rgo0gg",
+      authDomain: "aromaatlas-ff5cd.firebaseapp.com",
+      projectId: "aromaatlas-ff5cd",
+      storageBucket: "aromaatlas-ff5cd.appspot.com",
+      messagingSenderId: "1084697066953",
+      appId: "1:1084697066953:web:9ae27d03d54025fbba7c18",
+      measurementId: "G-96QJG9WKWY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadAnalytics() {
+      const [cafeSnap, drinkSnap, tableSnap, bookingSnap, ratingSnap, orderSnap] = await Promise.all([
+        getDocs(collection(db, "cafes")),
+        getDocs(collection(db, "drinks")),
+        getDocs(collection(db, "tables")),
+        getDocs(collection(db, "Bookings")),
+        getDocs(collection(db, "cafe_ratings")),
+        getDocs(collection(db, "orders")),
+      ]);
+
+      document.getElementById("cafeCount").textContent = cafeSnap.size;
+      document.getElementById("drinkCount").textContent = drinkSnap.size;
+      document.getElementById("tableCount").textContent = tableSnap.size;
+      document.getElementById("bookingCount").textContent = bookingSnap.size;
+      document.getElementById("ratingCount").textContent = ratingSnap.size;
+      document.getElementById("orderCount").textContent = orderSnap.size;
+    }
+
+    loadAnalytics();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      height: 100vh;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .header {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background-color: #3498db;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-box:nth-child(2) {
+      background-color: #e67e22;
+    }
+
+    .stat-box h2 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .stat-box p {
+      margin: 5px 0 0;
+    }
+
+    button {
+      margin-top: 8px;
+      margin-right: 10px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .approve-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    .reject-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <h2>🔧 Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="charts.html">Charts</a>
+    <a href="ratings.html">Ratings</a>
+    <a href="cafes.html">Manage Cafes</a>
+    <a href="login.html">Logout</a>
+  </div>
+
+  <div class="main-content">
+    <div class="header">Welcome, Admin</div>
+
+    <div class="stats">
+      <div class="stat-box">
+        <h2 id="merchantCount">0</h2>
+        <p>Users</p>
+      </div>
+      <!-- <div class="stat-box">
+        <h2 id="productCount">0</h2>
+        <p>Products</p>
+      </div> -->
+    </div>
+
+    <div class="card">
+      <h3>Pending Merchant Approvals</h3>
+      <ul id="pendingMerchants">
+        <li>Loading...</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      where,
+      doc,
+      getDoc,
+      setDoc,
+      deleteDoc,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6NAG1a8Bv8SiNBPBcZBWdpldK7Rgo0gg",
+      authDomain: "aromaatlas-ff5cd.firebaseapp.com",
+      projectId: "aromaatlas-ff5cd",
+      storageBucket: "aromaatlas-ff5cd.appspot.com",
+      messagingSenderId: "1084697066953",
+      appId: "1:1084697066953:web:9ae27d03d54025fbba7c18",
+      measurementId: "G-96QJG9WKWY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    getAnalytics(app);
+
+    async function loadDashboard() {
+      // Fetch merchant and product counts
+      const merchantSnap = await getDocs(collection(db, "users"));
+      document.getElementById("merchantCount").textContent = merchantSnap.size;
+
+      // const productSnap = await getDocs(collection(db, "glasses"));
+      // document.getElementById("productCount").textContent = productSnap.size;
+
+      // Pending merchants
+      const q = query(collection(db, "registration"), where("status", "==", "pending"));
+      const pendingSnap = await getDocs(q);
+      const list = document.getElementById("pendingMerchants");
+      list.innerHTML = "";
+
+      if (pendingSnap.empty) {
+        list.innerHTML = "<li>No pending merchants.</li>";
+        return;
+      }
+
+      pendingSnap.forEach(docSnap => {
+        const data = docSnap.data();
+        const docId = docSnap.id;
+
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>${data.email}</strong> (${data.userId})<br/>
+          <button class="approve-btn" data-id="${docId}">✅ Approve</button>
+          <button class="reject-btn" data-id="${docId}">❌ Reject</button>
+        `;
+        list.appendChild(li);
+      });
+
+      setupActionHandlers();
+    }
+
+    function setupActionHandlers() {
+      document.querySelectorAll(".approve-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const docId = btn.getAttribute("data-id");
+          const docRef = doc(db, "registration", docId);
+          const snapshot = await getDoc(docRef);
+
+          if (!snapshot.exists()) {
+            alert("Document not found.");
+            return;
+          }
+
+          const merchantData = snapshot.data();
+          const tempPassword = Math.random().toString(36).slice(-10);
+          let uid;
+
+          try {
+            const userCred = await createUserWithEmailAndPassword(auth, merchantData.email, tempPassword);
+            uid = userCred.user.uid;
+            await sendPasswordResetEmail(auth, merchantData.email);
+          } catch (error) {
+            if (error.code === "auth/email-already-in-use") {
+              alert("Email already registered. Reset link will be sent.");
+              await sendPasswordResetEmail(auth, merchantData.email);
+              uid = merchantData.userId;
+            } else {
+              console.error(error);
+              alert("Error during user creation.");
+              return;
+            }
+          }
+
+          await setDoc(doc(db, "users", uid), {
+            email: merchantData.email,
+            userId: uid,
+            role: merchantData.role,
+            ssm: merchantData.SSM,
+            status: "approved"
+          });
+
+          await deleteDoc(docRef);
+          alert("Merchant approved.");
+          loadDashboard();
+        });
+      });
+
+      document.querySelectorAll(".reject-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const docId = btn.getAttribute("data-id");
+          const docRef = doc(db, "registration", docId);
+          await updateDoc(docRef, { status: "rejected" });
+          alert("Merchant rejected.");
+          loadDashboard();
+        });
+      });
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

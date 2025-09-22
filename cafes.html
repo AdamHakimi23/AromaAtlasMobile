@@ -1,0 +1,215 @@
+<!-- File: cafes.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Cafes</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      height: 100vh;
+      color: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      text-decoration: none;
+      margin: 15px 0;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .cafe-box {
+      border-bottom: 1px solid #ccc;
+      padding: 15px 0;
+    }
+
+    .cafe-box:last-child {
+      border-bottom: none;
+    }
+
+    .filter-box {
+      margin-bottom: 20px;
+    }
+
+    .filter-box select {
+      padding: 6px 10px;
+    }
+
+    button {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .toggle-btn {
+      background: #e67e22;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>🔧 Admin Panel</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="analytics.html">Analytics</a>
+    <a href="charts.html">Charts</a>
+    <a href="ratings.html">Ratings</a>
+    <a href="cafes.html">Manage Cafes</a>
+    <a href="login.html">Logout</a>
+    <!-- <p id="userEmail" style="font-size: 13px; color: #bdc3c7; margin-top: 10px;">Loading...</p> -->
+  </div>
+
+  <div class="main-content">
+    <h2>🏪 Manage Cafes</h2>
+
+    <div class="filter-box">
+      <label>Status Filter:</label>
+      <select id="statusFilter">
+        <option value="">All</option>
+        <option value="active">Active</option>
+        <option value="suspended">Suspended</option>
+      </select>
+    </div>
+
+    <div class="card" id="cafeList">Loading cafes...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      doc,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6NAG1a8Bv8SiNBPBcZBWdpldK7Rgo0gg",
+      authDomain: "aromaatlas-ff5cd.firebaseapp.com",
+      projectId: "aromaatlas-ff5cd"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.onclick = () => {
+        signOut(auth);
+        window.location.href = "login.html";
+      };
+    }
+
+    let cafes = []; // store cafes globally for filtering and re-render
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) return location.href = "login.html";
+
+      try {
+        const emailEl = document.getElementById("userEmail");
+        if (emailEl) emailEl.textContent = user.email;
+
+        const cafesSnap = await getDocs(collection(db, "cafes"));
+        const usersSnap = await getDocs(collection(db, "users"));
+        const userMap = {};
+        usersSnap.forEach(doc => userMap[doc.id] = doc.data().email);
+
+        cafes = [];
+        cafesSnap.forEach(doc => cafes.push({ id: doc.id, ...doc.data() }));
+
+        renderCafes(cafes, userMap);
+
+        document.getElementById("statusFilter").addEventListener("change", e => {
+          const filter = e.target.value;
+          const filtered = filter ? cafes.filter(c => c.status === filter) : cafes;
+          renderCafes(filtered, userMap);
+        });
+      } catch (error) {
+        console.error("Error loading cafes:", error);
+        document.getElementById("cafeList").innerHTML = "<p style='color:red;'>Failed to load cafes.</p>";
+      }
+    });
+
+   function renderCafes(cafes, userMap) {
+  const container = document.getElementById("cafeList");
+  container.innerHTML = "";
+
+  if (cafes.length === 0) {
+    container.innerHTML = "<p>No cafes found.</p>";
+    return;
+  }
+
+  cafes.forEach(cafe => {
+    const div = document.createElement("div");
+    div.className = "cafe-box";
+
+    const ownerEmail = userMap[cafe.ownerId] || "Unknown";
+    const statusLabel = cafe.status || "unknown";
+
+    div.innerHTML = `
+      <div style="display: flex; gap: 20px;">
+        <img src="${cafe.imageUrl || '#'}" alt="${cafe.name}" width="100" height="100" style="object-fit: cover; border-radius: 6px;" />
+        <div style="flex: 1">
+          <p><strong>${cafe.name}</strong> (${cafe.cafeId})</p>
+          <p>Owner: ${cafe.OwnerName || ownerEmail}</p>
+          <p>${cafe.description || 'No description'}</p>
+          <p>🕒 ${cafe.workingHours || '-'} | 📅 ${cafe.workingDay || '-'}</p>
+          <p>Status: <strong>${statusLabel}</strong></p>
+          <button class="toggle-btn" data-id="${cafe.id}" data-status="${statusLabel}">
+            ${statusLabel === "active" ? "Suspend" : "Activate"}
+          </button>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
+
+  document.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const cafeId = btn.getAttribute("data-id");
+      const currentStatus = btn.getAttribute("data-status");
+      const newStatus = currentStatus === "active" ? "suspended" : "active";
+
+      await updateDoc(doc(db, "cafes", cafeId), { status: newStatus });
+      alert(`Cafe status updated to ${newStatus}.`);
+      location.reload();
+    });
+  });
+}
+  </script>
+</body>
+</html>
