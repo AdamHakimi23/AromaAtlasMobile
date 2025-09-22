@@ -1,0 +1,81 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp"
+    card_view:cardBackgroundColor="#EBD788">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/menu_item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="Menu item image" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="32dp">
+
+                <TextView
+                    android:id="@+id/menu_item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Drink Name"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="#4E342E" />
+
+                <TextView
+                    android:id="@+id/menu_item_bean"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bean: Arabica"
+                    android:textColor="#5D4037" />
+
+                <TextView
+                    android:id="@+id/menu_item_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Type: Cold Brew"
+                    android:textColor="#5D4037" />
+
+                <TextView
+                    android:id="@+id/menu_item_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Price: RM 4.50"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewFavorite"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="top|end"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_heart_outline"
+                android:contentDescription="Favorite"
+                android:clickable="true"
+                android:focusable="true" />
+        </FrameLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

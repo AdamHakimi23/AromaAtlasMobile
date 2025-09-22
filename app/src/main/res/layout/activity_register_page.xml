@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#EFEBE9">
+
+    <!-- Top Bar with Back Button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#D7CCC8"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:padding="6dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="#4E342E"
+            tools:ignore="UseAppTint,TouchTargetSizeCheck" />
+    </RelativeLayout>
+
+    <!-- Scrollable Form Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- Coffee Logo -->
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="Coffee Logo"
+                android:src="@drawable/ic_coffee_cup"
+                tools:ignore="HardcodedText" />
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_new_account"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#4E342E"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/registerEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/edittext_background"
+                android:padding="14dp"
+                android:textColor="#3E2723"
+                android:textColorHint="#A1887F"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/registerPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:background="@drawable/edittext_background"
+                android:padding="14dp"
+                android:textColor="#3E2723"
+                android:textColorHint="#A1887F"
+                android:layout_marginBottom="16dp" />
+
+            <!-- License -->
+            <EditText
+                android:id="@+id/registerLicense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="SSM NO"
+                android:visibility="gone"
+                android:background="@drawable/edittext_background"
+                android:padding="14dp"
+                android:textColor="#3E2723"
+                android:textColorHint="#A1887F"
+                android:layout_marginBottom="16dp" />
+
+            <!-- User Role -->
+            <RadioGroup
+                android:id="@+id/roleGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <RadioButton
+                    android:id="@+id/radioEnthusiast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cafe Enthusiast"
+                    android:checked="true"
+                    android:textColor="#5D4037" />
+
+                <RadioButton
+                    android:id="@+id/radioOwner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Business Owner"
+                    android:textColor="#5D4037"
+                    android:layout_marginStart="24dp" />
+            </RadioGroup>
+
+            <!-- Cafe Name -->
+            <EditText
+                android:id="@+id/cafeNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cafe Name"
+                android:visibility="gone"
+                android:background="@drawable/edittext_background"
+                android:padding="14dp"
+                android:textColor="#3E2723"
+                android:textColorHint="#A1887F"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Cafe Location -->
+            <EditText
+                android:id="@+id/cafeLocationInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Cafe Location"
+                android:visibility="gone"
+                android:background="@drawable/edittext_background"
+                android:padding="14dp"
+                android:textColor="#3E2723"
+                android:textColorHint="#A1887F"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/registerBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:backgroundTint="#6D4C41"
+                android:textColor="#FFFFFF"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

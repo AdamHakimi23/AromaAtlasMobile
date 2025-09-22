@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">AromaAtlas</string>
+    <string name="account_page">Account Page</string>
+    <string name="filter">Filter</string>
+    <string name="coffee_logo">Coffee Logo</string>
+    <string name="welcome_to_aroma_atlas">Welcome to Aroma Atlas</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register_instead">Register Instead</string>
+    <string name="search_caf_or_drinks">Search café or drinks</string>
+    <string name="top_recommended">Top Recommended</string>
+    <string name="register_new_account">Register New Account</string>
+    <string name="cafe_owner_application">Cafe Owner Application</string>
+    <string-array name="drink_types_array">
+        <item>Espresso</item>
+        <item>Latte</item>
+        <item>Cappuccino</item>
+        <item>Americano</item>
+        <item>Cold Brew</item>
+        <item>Mocha</item>
+    </string-array>
+    <string-array name="bean_types_array">
+        <item>Arabica</item>
+        <item>Robusta</item>
+        <item>Liberica</item>
+        <item>Excelsa</item>
+    </string-array>
+    <string-array name="order_status_array">
+        <item>All</item>
+        <item>pending</item>
+        <item>ready</item>
+        <item>completed</item>
+    </string-array>
+</resources>

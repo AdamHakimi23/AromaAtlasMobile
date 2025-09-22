@@ -1,0 +1,15 @@
+<resources>
+    <!-- Shape for rounded corners -->
+    <style name="ShapeAppearance.MyApp.CoffeeButton" parent="">
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- Custom button style -->
+    <style name="Widget.MyApp.CoffeeButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/coffeeBrown</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.MyApp.CoffeeButton</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>

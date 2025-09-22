@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1084697066953",
+    "project_id": "aromaatlas-ff5cd",
+    "storage_bucket": "aromaatlas-ff5cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084697066953:android:d1ad2401b94dbef6ba7c18",
+        "android_client_info": {
+          "package_name": "com.example.aromaatlas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYUexdb_00x_Ir8wN4L0UwNndjdF0olWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

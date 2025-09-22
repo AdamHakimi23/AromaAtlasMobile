@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="coffeeBrown">#6D4C41</color>
+    <color name="brown">#6D4C41</color>
+    <color name="light_cream">#FFF3E0</color>
+    <color name="lightCoffee">#D7CCC8</color>
+    <color name="darkText">#3E2723</color>
+    <color name="bottom_nav_icon_color">#FFFFFF</color> <!-- or #6D4C41 for coffeeBrown -->
+    <color name="red">#FF0000</color>
+    <color name="chip_selected">#FFE0B2</color> <!-- Light orange example -->
+    <color name="category">#B2A189</color>
+    <color name="selected_category">#A2845C</color>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/cafe"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cafe Owner Portal"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#3E2723"
+        android:layout_marginBottom="40dp" />
+
+    <Button
+        android:id="@+id/btnDashboard"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="☕ Register Cafe"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/brown"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_button" />
+
+    <Button
+        android:id="@+id/btnPinLocation"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="📍 Pin Location Cafe"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/brown"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_button" />
+
+    <Button
+        android:id="@+id/btnMenu"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="🍽️ Manage Cafe"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/brown"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_button" />
+
+    <Button
+        android:id="@+id/btnProfile"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="🧑‍💼 Manage Profile"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/brown"
+        android:textColor="@android:color/white"
+        android:background="@drawable/round_button" />
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<!-- File: res/layout/activity_nearby_map.xml -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Google Map Fragment (Base layer) -->
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Bottom Info Panel -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cafeInfoCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_gravity="bottom"
+        android:elevation="8dp"
+        android:backgroundTint="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/txtCafeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cafe Aroma"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/textViewWorkingDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Working Day: Monday-Friday"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewWorkingHours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Working Hours: 8.00 p.m - 2.00 a.m"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:id="@+id/txtDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12.9 km"
+                android:textColor="#333"
+                android:layout_marginTop="6dp"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

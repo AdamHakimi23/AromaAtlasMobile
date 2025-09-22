@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEBE9">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="32dp"
+        android:gravity="center_horizontal">
+
+        <!-- Coffee Logo -->
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/coffee_logo"
+            android:src="@drawable/ic_coffee_cup" />
+
+        <!-- Welcome Message -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_to_aroma_atlas"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#4E342E"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Email Field -->
+        <EditText
+            android:id="@+id/loginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/edittext_background"
+            android:padding="14dp"
+            android:textColor="#3E2723"
+            android:textColorHint="#A1887F"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Password Field -->
+        <EditText
+            android:id="@+id/loginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:background="@drawable/edittext_background"
+            android:padding="14dp"
+            android:textColor="#3E2723"
+            android:textColorHint="#A1887F"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Forgot Password Text -->
+        <TextView
+            android:id="@+id/forgotPasswordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textColor="#795548"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:backgroundTint="#6D4C41"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="sans-serif-medium" />
+
+        <!-- Register Button -->
+        <Button
+            android:id="@+id/goToRegisterBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_instead"
+            android:backgroundTint="#6D4C41"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="sans-serif-medium" />
+
+        <!-- Owner Application -->
+        <Button
+            android:id="@+id/OwnerApplication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#6D4C41"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/cafe_owner_application"
+            android:layout_marginBottom="12dp"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+</ScrollView>

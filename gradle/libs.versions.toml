@@ -1,0 +1,72 @@
+    [versions]
+    cardview = "1.0.0"
+    compiler = "4.16.0"
+    firebaseAuth = "23.2.1"
+firebaseBom = "33.16.0"
+    firebaseFirestore = "25.1.4"
+firebaseStorageVersion = "21.0.2"
+    firebaseUiFirestore = "8.0.2"
+    fragment = "1.8.8"
+    glide = "4.16.0"
+    googlePlayServicesMapsVersion = "19.2.0"
+    gson = "2.10.1"
+    junit = "4.13.2"
+    junitVersion = "1.2.1"
+    espressoCore = "3.6.1"
+    appcompat = "1.7.1"
+    material = "1.12.0"
+    activity = "1.10.1"
+    constraintlayout = "2.2.1"
+    googleGmsGoogleServices = "4.4.3"
+    firebaseDatabase = "21.0.0"
+    agp = "8.9.3"
+    androidx-macro-benchmark = "1.3.4"
+    materialVersion = "1.12.0"
+    mpandroidchartVersion = "v3.1.0"
+    my-library = "1.4"
+    playServicesAuth = "21.3.0"
+    playServicesLocation = "21.3.0"
+    playServicesMaps = "19.2.0"
+    firebaseStorage = "21.0.2"
+    playServicesMapsVersion = "19.2.0"
+    recyclerview = "1.4.0"
+    recyclerviewVersion = "1.4.0"
+
+    [libraries]
+    androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+    androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+    androidx-recyclerview-v132 = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerviewVersion" }
+    compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
+    firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+    firebase-auth = { module = "com.google.firebase:firebase-auth" }
+    firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+    firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+    firebase-storage-v2102 = { module = "com.google.firebase:firebase-storage", version.ref = "firebaseStorageVersion" }
+    firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", version.ref = "firebaseUiFirestore" }
+    glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+    gms-play-services-maps-v1820 = { module = "com.google.android.gms:play-services-maps", version.ref = "googlePlayServicesMapsVersion" }
+
+    google-firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+    google-firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
+    gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+    junit = { group = "junit", name = "junit", version.ref = "junit" }
+    ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+    espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+    appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+    material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+    activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+    constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+    firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+    androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidx-macro-benchmark" }
+    material-v1110 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+    mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchartVersion" }
+    play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
+    play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+    play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+    firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+    play-services-maps-v1810 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
+    androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+
+    [plugins]
+    android-application = { id = "com.android.application", version.ref = "agp" }
+    google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
